@@ -82,6 +82,25 @@ func (e *Error) Unwrap() error {
 	return e.cause
 }
 
+// WithCause sets the underlying cause error for this Error.
+// This allows adding a cause to an error after it has been created.
+// Returns the same Error instance to enable method chaining.
+//
+// Example:
+//
+//	err := New("user.operation_failed")
+//	err.WithCause(dbError)
+//
+// Or with method chaining:
+//
+//	err := New("user.operation_failed").WithCause(dbError).WithMessage("Failed to save user")
+func (e *Error) WithCause(cause error) *Error {
+	if e != nil {
+		e.cause = cause
+	}
+	return e
+}
+
 // Is implements custom error comparison for errors.Is().
 //
 //	if errors.Is(err, New("user.not_found")) {
